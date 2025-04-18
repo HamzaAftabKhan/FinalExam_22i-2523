@@ -1,4 +1,3 @@
-# This is a basic workflow to help you get started with Actions
 name: Final Exam
 
 on:
@@ -6,8 +5,17 @@ on:
     branches: [main]
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - menu-services
+          - order-services
+          - payment-services
+          - inventory-services
+          - customer-services
 
     steps:
       - name: Checkout code
@@ -25,9 +33,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./${{ matrix.service }}
+          file: ./${{ matrix.service }}/Dockerfile
           push: true
-          tags: ${{ hamza371 }}
-
+          tags: ${{ 3740566043829 }}/${{ matrix.service }}:latest
 
